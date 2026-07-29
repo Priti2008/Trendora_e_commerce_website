@@ -1,41 +1,41 @@
-# Trendora - Full Stack E-commerce App
+# 🛒 Trendora - Microservices E-Commerce Application
 
-A modern full-stack e-commerce application built with React, Express.js, and PostgreSQL.
+Trendora is a full-stack e-commerce application built using **React, Node.js, Express, PostgreSQL, and Microservices Architecture**.  
+The project demonstrates product management, user authentication, cart functionality, order processing, and API gateway integration.
 
-## Features
+---
 
-- Product listing
-- Search products
-- Shopping cart
-- Quantity management
-- Remove items
-- Clear cart
-- Persistent cart with localStorage
-- Responsive UI
+## ✨ Features
 
-## Tech Stack
+### Frontend (React + Vite)
+- 🏠 Home page
+- 📦 Product listing
+- 🔍 Product search
+- 🛒 Add to cart
+- 💾 Persistent cart using Local Storage
+- 🔐 User registration
+- 🔑 User login
+- 📄 Order history page
 
-- React
-- Vite
-- Express.js
-- PostgreSQL
-- Axios
-- Context API
+### Backend (Microservices)
+- 📦 Product Service
+- 👤 User Service
+- 📋 Order Service
+- 🌐 API Gateway
 
-## Run Locally
+### Database
+- 🐘 PostgreSQL integration for product management
 
-### Frontend
+---
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## 🏗️ Architecture
 
-### Backend
-
-```bash
-cd backend
-npm install
-npm run dev
-```
+```text
+Frontend (React)
+        |
+        v
+API Gateway (5000)
+   /        |        \
+  v         v         v
+Users     Products   Orders
+5001       5002       5003
