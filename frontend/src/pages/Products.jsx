@@ -1,51 +1,62 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../services/productService";
 import ProductCard from "../components/ProductCard";
-import "../styles/productCard.css";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
+useEffect(() => {
   const fetchProducts = async () => {
     try {
       const data = await getProducts();
-      setProducts(data);
-    } catch (error) {
-      console.error(error);
+      console.log("Products received:", data);
+
+      // Important fix
+      setProducts(Array.isArray(data) ? data : data.products || []);
+    } catch (err) {
+      console.error("Failed to fetch products", err);
     }
   };
+
+  fetchProducts();
+}, []);
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div className="products-container">
-      <h1 className="products-title">Trending Products</h1>
+    <div style={{ padding: "20px" }}>
+      <h2>Products</h2>
 
-      <div className="search-box">
-        <input
-          type="text"
-          placeholder="🔍 Search products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{
+          padding: "10px",
+          width: "100%",
+          maxWidth: "400px",
+          marginBottom: "20px",
+          borderRadius: "8px",
+          border: "1px solid #ccc",
+        }}
+      />
 
       {filteredProducts.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No products found</p>
+        <p>No products found.</p>
       ) : (
-        <div className="products-grid">
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+            gap: "20px",
+          }}
+        >
           {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-            />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}

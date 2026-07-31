@@ -1,106 +1,96 @@
-import { useCart } from "../context/CartContext";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
+import { createOrder } from "../services/orderService";
+import { isLoggedIn } from "../utils/auth";
 
 function Cart() {
- const {
-  cartItems,
-  increaseQuantity,
-  decreaseQuantity,
-  removeFromCart,
-  clearCart,
-} = useCart();
+  const {
+    cartItems,
+    removeFromCart,
+    increaseQty,
+    decreaseQty,
+    clearCart,
+  } = useContext(CartContext);
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  const totalAmount = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
     0
   );
 
+  const handlePlaceOrder = async () => {
+    // Login protection
+    if (!isLoggedIn()) {
+      alert("Please login to place an order");
+      return;
+    }
+
+    try {
+      await createOrder({
+        items: cartItems,
+        total: totalAmount,
+      });
+
+      alert("Order placed successfully!");
+      clearCart();
+    } catch (err) {
+      alert("Failed to place order");
+      console.error(err);
+    }
+  };
+
+  if (cartItems.length === 0) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <h2>Your Cart is Empty</h2>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>🛒 Shopping Cart</h1>
+    <div style={{ padding: "20px" }}>
+      <h2>Shopping Cart</h2>
 
-      {cartItems.length === 0 ? (
-        <p>Your cart is empty.</p>
-      ) : (
-        <>
-          {cartItems.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                display: "flex",
-                gap: "20px",
-                alignItems: "center",
-                border: "1px solid #ddd",
-                padding: "20px",
-                borderRadius: "10px",
-                marginBottom: "20px",
-              }}
-            >
-              <img
-                src={item.image}
-                alt={item.name}
-                width="120"
-                style={{ borderRadius: "8px" }}
-              />
+      {cartItems.map((item) => (
+        <div
+          key={item.id}
+          style={{
+            border: "1px solid #ccc",
+            padding: "15px",
+            marginBottom: "15px",
+            borderRadius: "10px",
+          }}
+        >
+          <h3>{item.name}</h3>
 
-              <div style={{ flex: 1 }}>
-                <h3>{item.name}</h3>
-                <p>${item.price}</p>
+          <p>Price: ₹{item.price}</p>
 
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <button onClick={() => decreaseQuantity(item.id)}>
-                    ➖
-                  </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <button onClick={() => decreaseQty(item.id)}>-</button>
 
-                  <span>{item.quantity}</span>
+            <span>{item.quantity}</span>
 
-                  <button onClick={() => increaseQuantity(item.id)}>
-                    ➕
-                  </button>
-                </div>
-              </div>
+            <button onClick={() => increaseQty(item.id)}>+</button>
+          </div>
 
-              <button
-                onClick={() => removeFromCart(item.id)}
-                style={{
-                  background: "crimson",
-                  color: "white",
-                  border: "none",
-                  padding: "10px 15px",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                }}
-              >
-                Remove
-              </button>
-            </div>
-          ))}
+          <p>Subtotal: ₹{item.price * item.quantity}</p>
 
-          <div
-  style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: "30px",
-  }}
->
-  <h2>Total: ${total.toFixed(2)}</h2>
+          <button onClick={() => removeFromCart(item.id)}>
+            Remove
+          </button>
+        </div>
+      ))}
 
-  <button
-    onClick={clearCart}
-    style={{
-      background: "black",
-      color: "white",
-      border: "none",
-      padding: "12px 20px",
-      borderRadius: "8px",
-      cursor: "pointer",
-    }}
-  >
-    Clear Cart
-  </button>
-</div>
-        </>
-      )}
+      <h3>Total: ₹{totalAmount}</h3>
+
+      <div style={{ marginTop: "20px" }}>
+        <button onClick={clearCart} style={{ marginRight: "10px" }}>
+          Clear Cart
+        </button>
+
+        <button onClick={handlePlaceOrder}>
+          Place Order
+        </button>
+      </div>
     </div>
   );
 }

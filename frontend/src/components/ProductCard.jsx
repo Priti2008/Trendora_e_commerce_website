@@ -1,12 +1,12 @@
-import { useCart } from "../context/CartContext";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
+import "../styles/productCard.css";
 
 function ProductCard({ product }) {
-  const { addToCart } = useCart();
+  const { addToCart } = useContext(CartContext);
 
   return (
     <div className="product-card">
-      <div className="wishlist">❤️</div>
-
       <img
         src={product.image}
         alt={product.name}
@@ -14,25 +14,15 @@ function ProductCard({ product }) {
       />
 
       <div className="product-info">
-        <span className="category-tag">
-          {product.category}
-        </span>
-
         <h2>{product.name}</h2>
-
-        <div className="rating">
-          ⭐⭐⭐⭐⭐ <span>(4.8)</span>
-        </div>
 
         <p>{product.description}</p>
 
-        <div className="price-row">
-          <h3>${product.price}</h3>
+        <h3>₹{product.price}</h3>
 
-          <span className="stock">
-            {product.stock} left
-          </span>
-        </div>
+        <p><strong>Category:</strong> {product.category}</p>
+
+        <p><strong>Stock:</strong> {product.stock}</p>
 
         <button
           className="cart-btn"
