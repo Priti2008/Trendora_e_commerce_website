@@ -1,56 +1,64 @@
-import { useState } from "react";
-import { loginUser } from "../services/authService";
-
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const res = await loginUser({ email, password });
-
-      localStorage.setItem("token", res.data.token);
-
-      alert("Login successful!");
-    } catch (err) {
-      alert("Login failed!");
-      console.error(err);
-    }
-  };
-
+export default function Login() {
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Login</h2>
+    <div style={{
+      minHeight: "100vh",
+      background: "#0b1220",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "white",
+      fontFamily: "Arial"
+    }}>
+      <div style={{
+        background: "#111827",
+        padding: "40px",
+        borderRadius: "20px",
+        width: "360px",
+        border: "1px solid #1e293b"
+      }}>
+        <h2 style={{ marginBottom: "24px", textAlign: "center" }}>Login</h2>
 
-      <form onSubmit={handleLogin}>
-        <div style={{ marginBottom: "10px" }}>
-          <input
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ padding: "10px", width: "250px" }}
-          />
-        </div>
+        <input
+          type="email"
+          placeholder="Email"
+          style={{
+            width: "100%",
+            padding: "12px",
+            marginBottom: "16px",
+            borderRadius: "10px",
+            border: "1px solid #374151",
+            background: "#0b1220",
+            color: "white"
+          }}
+        />
 
-        <div style={{ marginBottom: "10px" }}>
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={{ padding: "10px", width: "250px" }}
-          />
-        </div>
+        <input
+          type="password"
+          placeholder="Password"
+          style={{
+            width: "100%",
+            padding: "12px",
+            marginBottom: "20px",
+            borderRadius: "10px",
+            border: "1px solid #374151",
+            background: "#0b1220",
+            color: "white"
+          }}
+        />
 
-        <button type="submit" style={{ padding: "10px 20px" }}>
+        <button style={{
+          width: "100%",
+          background: "#2563eb",
+          color: "white",
+          border: "none",
+          padding: "12px",
+          borderRadius: "10px",
+          fontWeight: "bold",
+          cursor: "pointer"
+        }}>
           Login
         </button>
-      </form>
+      </div>
     </div>
   );
 }
-
-export default Login;

@@ -1,143 +1,82 @@
-import React from "react";
-
-function Navbar({
+export default function Navbar({
   cartCount,
   wishlistCount,
   searchTerm,
   setSearchTerm,
 }) {
   return (
-    <nav
+    <div
       style={{
-        background: "#0f172a",
-        borderBottom: "1px solid #1e293b",
+        background: "#111827",
+        padding: "16px 28px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderBottom: "1px solid #1f2937",
         position: "sticky",
         top: 0,
         zIndex: 1000,
       }}
     >
+      {/* Logo */}
+      <h2 style={{ margin: 0, color: "white" }}>🛍️ Trendora</h2>
+
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{
+          width: "320px",
+          padding: "10px 14px",
+          borderRadius: "10px",
+          border: "1px solid #374151",
+          background: "#0b1220",
+          color: "white",
+          outline: "none",
+        }}
+      />
+
+      {/* Right side */}
       <div
         style={{
-          maxWidth: "1280px",
-          margin: "0 auto",
-          padding: "16px 24px",
           display: "flex",
+          gap: "20px",
           alignItems: "center",
-          justifyContent: "space-between",
-          gap: "24px",
+          color: "white",
         }}
       >
-        {/* Logo */}
-        <div
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        <a
+          href="/login"
           style={{
-            fontSize: "30px",
-            fontWeight: "800",
-            color: "#ffffff",
-            cursor: "pointer",
-          }}
-        >
-          Trendora
-        </div>
-
-        {/* Navigation */}
-        <div
-          style={{
-            display: "flex",
-            gap: "24px",
-            alignItems: "center",
-            fontWeight: "600",
-            color: "#cbd5e1",
-          }}
-        >
-          <span
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            style={{ cursor: "pointer" }}
-          >
-            Home
-          </span>
-
-          <span
-            onClick={() => window.scrollTo({ top: 360, behavior: "smooth" })}
-            style={{ cursor: "pointer" }}
-          >
-            Shop
-          </span>
-
-          <span
-            onClick={() => window.scrollTo({ top: 360, behavior: "smooth" })}
-            style={{ cursor: "pointer" }}
-          >
-            Men
-          </span>
-
-          <span
-            onClick={() => window.scrollTo({ top: 360, behavior: "smooth" })}
-            style={{ cursor: "pointer" }}
-          >
-            Women
-          </span>
-
-          <span
-            onClick={() => window.scrollTo({ top: 360, behavior: "smooth" })}
-            style={{ cursor: "pointer" }}
-          >
-            Accessories
-          </span>
-        </div>
-
-        {/* Search */}
-        <div style={{ flex: 1, maxWidth: "320px" }}>
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "12px 16px",
-              borderRadius: "999px",
-              border: "1px solid #334155",
-              background: "#111827",
-              color: "white",
-              outline: "none",
-            }}
-          />
-        </div>
-
-        {/* Right Side */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
             color: "white",
-            fontWeight: "600",
+            textDecoration: "none",
+            fontWeight: "bold",
           }}
         >
-          <span style={{ cursor: "pointer" }}>❤️ {wishlistCount}</span>
+          Login
+        </a>
 
-          <span style={{ cursor: "pointer" }}>🛒 {cartCount}</span>
+        <a
+          href="/register"
+          style={{
+            color: "white",
+            textDecoration: "none",
+            fontWeight: "bold",
+          }}
+        >
+          Register
+        </a>
 
-          <span style={{ cursor: "pointer" }}>Login</span>
+        <span style={{ fontWeight: "bold" }}>
+          ❤️ {wishlistCount}
+        </span>
 
-          <button
-            style={{
-              background: "#2563eb",
-              color: "white",
-              border: "none",
-              padding: "10px 16px",
-              borderRadius: "999px",
-              cursor: "pointer",
-              fontWeight: "700",
-            }}
-          >
-            Register
-          </button>
-        </div>
+        <span style={{ fontWeight: "bold" }}>
+          🛒 {cartCount}
+        </span>
       </div>
-    </nav>
+    </div>
   );
 }
-
-export default Navbar;
