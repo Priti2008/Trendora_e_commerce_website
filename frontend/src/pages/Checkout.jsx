@@ -19,7 +19,7 @@ export default function Checkout() {
             gap: "24px",
           }}
         >
-          {/* Left */}
+          {/* Left Section */}
           <div
             style={{
               background: "#111827",
@@ -44,7 +44,7 @@ export default function Checkout() {
             </label>
 
             <label style={labelStyle}>
-              <input type="radio" name="payment" /> Card
+              <input type="radio" name="payment" /> Debit / Credit Card
             </label>
 
             <label style={labelStyle}>
@@ -52,7 +52,7 @@ export default function Checkout() {
             </label>
           </div>
 
-          {/* Right */}
+          {/* Right Section */}
           <div
             style={{
               background: "#111827",
@@ -63,29 +63,29 @@ export default function Checkout() {
           >
             <h2 style={{ marginBottom: "20px" }}>Order Summary</h2>
 
-            <div style={row}>
+            <div style={summaryRow}>
               <span>Nike Air Max</span>
               <span>₹4,999</span>
             </div>
 
-            <div style={row}>
+            <div style={summaryRow}>
               <span>Apple Watch</span>
               <span>₹24,999</span>
             </div>
 
             <hr style={{ borderColor: "#334155", margin: "20px 0" }} />
 
-            <div style={row}>
+            <div style={summaryRow}>
               <span>Subtotal</span>
               <span>₹29,998</span>
             </div>
 
-            <div style={row}>
+            <div style={summaryRow}>
               <span>Delivery</span>
               <span>₹99</span>
             </div>
 
-            <div style={row}>
+            <div style={summaryRow}>
               <span>Discount</span>
               <span>-₹500</span>
             </div>
@@ -94,7 +94,7 @@ export default function Checkout() {
 
             <div
               style={{
-                ...row,
+                ...summaryRow,
                 fontSize: "20px",
                 fontWeight: "bold",
               }}
@@ -103,22 +103,23 @@ export default function Checkout() {
               <span>₹29,597</span>
             </div>
 
-            <button
+            <a
+              href="/success"
               style={{
+                display: "block",
                 width: "100%",
                 marginTop: "24px",
                 background: "#2563eb",
                 color: "white",
-                border: "none",
+                textDecoration: "none",
+                textAlign: "center",
                 padding: "14px",
                 borderRadius: "14px",
                 fontWeight: "bold",
-                cursor: "pointer",
               }}
-              onClick={() => alert("Order placed successfully!")}
             >
               Place Order
-            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -141,8 +142,9 @@ const labelStyle = {
   marginBottom: "14px",
 };
 
-const row = {
+const summaryRow = {
   display: "flex",
   justifyContent: "space-between",
   marginBottom: "14px",
+  color: "#e5e7eb",
 };

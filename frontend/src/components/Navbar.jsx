@@ -4,6 +4,14 @@ export default function Navbar({
   searchTerm,
   setSearchTerm,
 }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  };
+
   return (
     <div
       style={{
@@ -19,7 +27,17 @@ export default function Navbar({
       }}
     >
       {/* Logo */}
-      <h2 style={{ margin: 0, color: "white" }}>🛍️ Trendora</h2>
+      <a
+        href="/"
+        style={{
+          textDecoration: "none",
+          color: "white",
+          fontSize: "24px",
+          fontWeight: "bold",
+        }}
+      >
+        🛍️ Trendora
+      </a>
 
       {/* Search */}
       <input
@@ -47,35 +65,85 @@ export default function Navbar({
           color: "white",
         }}
       >
-        <a
-          href="/login"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "bold",
-          }}
-        >
-          Login
-        </a>
+        {user ? (
+          <>
+            <span
+              style={{
+                fontWeight: "bold",
+                color: "#60a5fa",
+              }}
+            >
+              👤 {user.name}
+            </span>
 
-        <a
-          href="/register"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "bold",
-          }}
-        >
-          Register
-        </a>
+            <a
+              href="/orders"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Orders
+            </a>
 
+            <button
+              onClick={logout}
+              style={{
+                background: "#ef4444",
+                color: "white",
+                border: "none",
+                padding: "8px 14px",
+                borderRadius: "10px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <a
+              href="/login"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Login
+            </a>
+
+            <a
+              href="/register"
+              style={{
+                color: "white",
+                textDecoration: "none",
+                fontWeight: "bold",
+              }}
+            >
+              Register
+            </a>
+          </>
+        )}
+
+        {/* Wishlist */}
         <span style={{ fontWeight: "bold" }}>
           ❤️ {wishlistCount}
         </span>
 
-        <span style={{ fontWeight: "bold" }}>
+        {/* Cart */}
+        <a
+          href="/checkout"
+          style={{
+            color: "white",
+            textDecoration: "none",
+            fontWeight: "bold",
+          }}
+        >
           🛒 {cartCount}
-        </span>
+        </a>
       </div>
     </div>
   );
