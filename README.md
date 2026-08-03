@@ -1,41 +1,63 @@
-# 🛒 Trendora - Microservices E-Commerce Application
+# 🛍️ Trendora – Full Stack Fashion E-Commerce Web Application
 
-Trendora is a full-stack e-commerce application built using **React, Node.js, Express, PostgreSQL, and Microservices Architecture**.  
-The project demonstrates product management, user authentication, cart functionality, order processing, and API gateway integration.
+Trendora is a premium full-stack fashion e-commerce web application built using **React (Vite)** for the frontend and **Express.js** for the backend. It includes real user authentication, shopping cart, wishlist, checkout flow, order history, and a responsive dark user interface.
 
 ---
 
 ## ✨ Features
 
-### Frontend (React + Vite)
-- 🏠 Home page
-- 📦 Product listing
-- 🔍 Product search
-- 🛒 Add to cart
-- 💾 Persistent cart using Local Storage
-- 🔐 User registration
-- 🔑 User login
-- 📄 Order history page
+### 👤 Authentication
+- User registration
+- User login
+- Password hashing with bcrypt
+- JWT token generation
+- Profile display after login
+- Logout functionality
 
-### Backend (Microservices)
-- 📦 Product Service
-- 👤 User Service
-- 📋 Order Service
-- 🌐 API Gateway
+### 🛒 Shopping
+- Product search
+- Category filtering
+- Wishlist
+- Shopping cart
+- Product quick-view popup
+- Checkout page
+- Order success page
+- Order history page
 
-### Database
-- 🐘 PostgreSQL integration for product management
+### 🎨 UI/UX
+- Premium dark theme
+- Responsive design
+- Sticky navbar
+- Professional product cards
+- Smooth user flow
 
 ---
 
-## 🏗️ Architecture
+## 🛠️ Tech Stack
+
+### Frontend
+- React
+- Vite
+- React Router
+
+### Backend
+- Node.js
+- Express.js
+- bcryptjs
+- jsonwebtoken
+- cors
+
+### Database
+- PostgreSQL-ready backend structure
+
+---
+
+## 📂 Project Structure
 
 ```text
-Frontend (React)
-        |
-        v
-API Gateway (5000)
-   /        |        \
-  v         v         v
-Users     Products   Orders
-5001       5002       5003
+trendora-fashion-store/
+├── frontend/
+├── backend/
+├── gateway/
+├── services/
+└── project-screenshots/
