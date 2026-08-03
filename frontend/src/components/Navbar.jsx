@@ -135,7 +135,7 @@ export default function Navbar({
 
         {/* Cart */}
         <a
-          href="/checkout"
+          href="/cart"
           style={{
             color: "white",
             textDecoration: "none",
