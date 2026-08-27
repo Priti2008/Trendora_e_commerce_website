@@ -153,8 +153,6 @@ This project helped me learn:
 
 ## 👥 Team
 
-- **Sanjana Dhali** — Team Leader & Frontend
-- **Priti Yadav** — Backend 
 
 
 
