@@ -227,7 +227,7 @@ This project helped me learn:
 
 ### Day 13 – UI Improvements
 
-* Improved the overall user interface.
+* Improved the overall user interface
 * Worked on responsive design and page layout.
 * Fixed minor UI and functionality issues.
 
