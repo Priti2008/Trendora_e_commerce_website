@@ -239,12 +239,5 @@ This project helped me learn:
 
 ## ✅ Current Status
 
-The major modules of the Trendora e-commerce website have been developed and integrated. The project is currently being tested and improved for the final demonstration.
-
-
-## 👥 Team
-
-
-
-
+The major modules of the Trendora e-commerce website have been developed and integrated. The project is currently being tested and improved for the final demonstration
 ⭐ If you like this project, consider giving it a star on GitHub!
