@@ -1,9 +1,7 @@
 # 🛍️ Trendora – Full Stack Fashion E-Commerce Web Application
 
 Trendora is a premium full-stack fashion e-commerce web application built using **React (Vite)** for the frontend and **Express.js** for the backend. It includes user authentication, product search, wishlist, shopping cart, checkout flow, order history, and a responsive dark user interface.
-
 ---
-
 ## ✨ Features
 
 ### 👤 Authentication
@@ -240,4 +238,3 @@ This project helped me learn:
 ## ✅ Current Status
 
 The major modules of the Trendora e-commerce website have been developed and integrated. The project is currently being tested and improved for the final demonstration
-⭐ If you like this project, consider giving it a star on GitHub!
