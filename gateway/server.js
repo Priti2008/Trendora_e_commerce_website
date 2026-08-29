@@ -14,7 +14,6 @@ app.use(
     changeOrigin: true,
   })
 );
-
 // User Service
 app.use(
   "/api/users",
@@ -38,7 +37,6 @@ app.use(
     },
   })
 );
-
 app.listen(5000, () => {
   console.log("API Gateway running on port 5000");
 });
