@@ -1,14 +1,38 @@
 import { Link } from "react-router-dom";
 
 function Home() {
+  const card = {
+    padding: "24px",
+    borderRadius: "12px",
+    background: "#f5f7fb",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+    textAlign: "center",
+  };
+
   return (
-    <div style={{ textAlign: "center", padding: "60px 20px" }}>
-      <h1 style={{ fontSize: "64px", marginBottom: "20px" }}>
+    <div
+      style={{
+        textAlign: "center",
+        padding: "60px 20px",
+      }}
+    >
+      <h1
+        style={{
+          fontSize: "64px",
+          marginBottom: "20px",
+        }}
+      >
         Welcome to Trendora
       </h1>
 
-      <p style={{ fontSize: "22px", color: "#bbb", marginBottom: "40px" }}>
-        Shop the latest sneakers, fashion, and accessories.
+      <p
+        style={{
+          fontSize: "22px",
+          color: "#666",
+          marginBottom: "40px",
+        }}
+      >
+        Shop the latest sneakers, fashion, and accessories
       </p>
 
       <Link
@@ -26,6 +50,7 @@ function Home() {
         Explore Products
       </Link>
 
+      {/* Existing features */}
       <div
         style={{
           marginTop: "60px",
@@ -51,15 +76,65 @@ function Home() {
           <p>Quick and secure shipping</p>
         </div>
       </div>
+
+      {/* NEW CONTRIBUTION */}
+      <div
+        style={{
+          marginTop: "60px",
+          maxWidth: "1000px",
+          marginInline: "auto",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "36px",
+            marginBottom: "10px",
+          }}
+        >
+          Why Shop With Trendora?
+        </h2>
+
+        <p
+          style={{
+            fontSize: "18px",
+            color: "#666",
+            marginBottom: "30px",
+          }}
+        >
+          Everything you need for a simple and enjoyable shopping experience.
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "20px",
+          }}
+        >
+          <div style={card}>
+            <h3>🛍️ Wide Collection</h3>
+            <p>
+              Discover products for every style and occasion.
+            </p>
+          </div>
+
+          <div style={card}>
+            <h3>🔒 Secure Shopping</h3>
+            <p>
+              Enjoy a safe and reliable shopping experience.
+            </p>
+          </div>
+
+          <div style={card}>
+            <h3>⭐ Quality Products</h3>
+            <p>
+              Shop carefully selected products from Trendora.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-
-const card = {
-  background: "#111827",
-  padding: "24px",
-  borderRadius: "16px",
-  border: "1px solid #1f2937",
-};
 
 export default Home;
