@@ -122,7 +122,7 @@ http://localhost:5000
 - Checkout
 - Orders
 
----
+----
 
 ## 🎯 Learning Outcomes
 
