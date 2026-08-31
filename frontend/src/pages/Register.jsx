@@ -104,7 +104,7 @@ const input = {
 
 const button = {
   width: "100%",
-  background: "#2563eb",
+  background: "#173d8e",
   color: "white",
   border: "none",
   padding: "12px",
