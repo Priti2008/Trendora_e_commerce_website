@@ -12,7 +12,7 @@ Trendora is a premium full-stack fashion e-commerce web application built using 
 - Profile display after login
 - Logout functionality
 
-### 🛒 Shopping
+##### 🛒 Shopping
 - Product search
 - Category filtering
 - Wishlist
