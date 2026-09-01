@@ -7,63 +7,91 @@ export default function Register() {
     password: "",
   });
 
-  const handleSubmit = async () => {
-    const res = await fetch("http://localhost:5000/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+  const [loading, setLoading] = useState(false);
 
-    const data = await res.json();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    if (data.success) {
-      localStorage.setItem("user", JSON.stringify(data.user));
-      window.location.href = "/";
-    } else {
-      alert(data.message);
+    if (!form.name || !form.email || !form.password) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        // Save the registered user
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Save JWT token for authentication
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+
+        // Redirect to home page
+        window.location.href = "/";
+      } else {
+        alert(data.message || "Registration failed");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      alert("Unable to connect to the server. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div style={container}>
       <div style={card}>
-        <h2 style={title}>Register</h2>
+        <h2 style={title}>Create Account</h2>
 
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={form.name}
-          onChange={(e) =>
-            setForm({ ...form, name: e.target.value })
-          }
-          style={input}
-        />
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={form.name}
+            onChange={(e) =>
+              setForm({ ...form, name: e.target.value })
+            }
+            style={input}
+          />
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) =>
-            setForm({ ...form, email: e.target.value })
-          }
-          style={input}
-        />
+          <input
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={(e) =>
+              setForm({ ...form, email: e.target.value })
+            }
+            style={input}
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={(e) =>
-            setForm({ ...form, password: e.target.value })
-          }
-          style={input}
-        />
+          <input
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={(e) =>
+              setForm({ ...form, password: e.target.value })
+            }
+            style={input}
+          />
 
-        <button onClick={handleSubmit} style={button}>
-          Create Account
-        </button>
+          <button type="submit" disabled={loading} style={button}>
+            {loading ? "Creating Account..." : "Create Account"}
+          </button>
+        </form>
       </div>
     </div>
   );
@@ -100,6 +128,7 @@ const input = {
   border: "1px solid #374151",
   background: "#0b1220",
   color: "white",
+  boxSizing: "border-box",
 };
 
 const button = {
