@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 
@@ -75,11 +77,11 @@ app.post("/api/login", async (req, res) => {
     });
   }
 
-  const token = jwt.sign(
-    { id: user.id, email: user.email },
-    "trendora-secret-key",
-    { expiresIn: "1d" }
-  );
+  jwt.sign(
+  { id: user.id, email: user.email },
+  process.env.JWT_SECRET,
+  { expiresIn: "1d" }
+);
 
   res.json({
     success: true,
