@@ -10,20 +10,38 @@ app.use(express.json());
 
 const users = [];
 
-// Register
+// register
 app.post("/api/users/register", async (req, res) => {
   const { name, email, password } = req.body;
 
+  const existingUser = users.find((u) => u.email === email);
+
+  if (existingUser) {
+    return res.status(400).json({
+      success: false,
+      message: "User already exists",
+    });
+  }
+
   const hashed = await bcrypt.hash(password, 10);
 
-  users.push({
+  const newUser = {
+    id: Date.now(),
     name,
     email,
     password: hashed,
-  });
+  };
+
+  users.push(newUser);
 
   res.json({
-    message: "User registered",
+    success: true,
+    message: "User registered successfully",
+    user: {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+    },
   });
 });
 
@@ -35,7 +53,8 @@ app.post("/api/users/login", async (req, res) => {
 
   if (!user) {
     return res.status(401).json({
-      message: "Invalid credentials",
+      success: false,
+      message: "User not found",
     });
   }
 
@@ -43,13 +62,16 @@ app.post("/api/users/login", async (req, res) => {
 
   if (!match) {
     return res.status(401).json({
-      message: "Invalid credentials",
+      success: false,
+      message: "Invalid password",
     });
   }
 
-  const token = jwt.sign({ email }, "secretkey", {
-    expiresIn: "1d",
-  });
+  const token = jwt.sign(
+    { id: user.id, email: user.email },
+    "secretkey",
+    { expiresIn: "1d" }
+  );
 
   res.json({
     success: true,
@@ -58,8 +80,8 @@ app.post("/api/users/login", async (req, res) => {
     user: {
       id: user.id,
       name: user.name,
-      email: user.email
-    }
+      email: user.email,
+    },
   });
 });
 
