@@ -7,8 +7,7 @@ export default function Login() {
   });
 
   const handleSubmit = async () => {
-    const res = await fetch("http://localhost:5000/api/login", {
-      method: "POST",
+    const res = await fetch("http://localhost:5000/api/users/login", {      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },

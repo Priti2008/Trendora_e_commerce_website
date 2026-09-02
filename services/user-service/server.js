@@ -51,7 +51,16 @@ app.post("/api/users/login", async (req, res) => {
     expiresIn: "1d",
   });
 
-  res.json({ token });
+  res.json({
+    success: true,
+    message: "Login successful",
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    }
+  });
 });
 
 app.listen(5001, () => {
