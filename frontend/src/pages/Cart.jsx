@@ -73,7 +73,7 @@ export default function Cart() {
               fontWeight: "bold",
             }}
           >
-            Proceed to Checkout
+            Proceed to Checkout page
           </a>
         </>
       )}
