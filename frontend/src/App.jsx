@@ -622,94 +622,120 @@ export default function App() {
           ))}
         </div>
       </section>
-            {/* NEWSLETTER SECTION */}
-      <section style={{ padding: "32px 32px 96px" }}>
-        <div
-          style={{
-            maxWidth: 1280,
-            margin: "0 auto",
-            background: "#FFFFFF",
-            borderRadius: 36,
-            padding: "48px 32px",
-            border: "1px solid rgba(249,115,22,0.12)",
-            boxShadow: "0 18px 40px rgba(15,23,42,0.06)",
-            textAlign: "center",
-          }}
-        >
-          <p
-            style={{
-              color: "#F97316",
-              fontWeight: 700,
-              letterSpacing: 1,
-              marginBottom: 12,
-            }}
-          >
-            NEWSLETTER
-          </p>
+           {/* NEWSLETTER SECTION */}
+<section
+  style={{
+    width: "100%",
+    boxSizing: "border-box",
+    padding: "32px 20px 80px",
+    overflow: "hidden",
+  }}
+>
+  <div
+    style={{
+      width: "100%",
+      maxWidth: "1280px",
+      margin: "0 auto",
+      boxSizing: "border-box",
+      background: "#FFFFFF",
+      borderRadius: "36px",
+      padding: "48px 24px",
+      border: "1px solid rgba(249,115,22,0.12)",
+      boxShadow: "0 18px 40px rgba(15,23,42,0.06)",
+      textAlign: "center",
+    }}
+  >
+    <p
+      style={{
+        color: "#F97316",
+        fontWeight: 700,
+        letterSpacing: 1,
+        margin: "0 0 12px",
+      }}
+    >
+      NEWSLETTER
+    </p>
 
-          <h2
-            style={{
-              fontSize: "clamp(2rem, 4vw, 3rem)",
-              margin: 0,
-              fontWeight: 800,
-            }}
-          >
-            Stay ahead of the trend
-          </h2>
+    <h2
+      style={{
+        width: "100%",
+        maxWidth: "900px",
+        margin: "0 auto",
+        fontSize: "clamp(2rem, 5vw, 3rem)",
+        lineHeight: 1.15,
+        fontWeight: 800,
+        color: "#111827",
+        overflowWrap: "break-word",
+      }}
+    >
+      Stay ahead of the trend
+    </h2>
 
-          <p
-            style={{
-              maxWidth: 640,
-              margin: "16px auto 28px",
-              color: "#6B7280",
-              lineHeight: 1.7,
-              fontSize: 15,
-            }}
-          >
-            Get exclusive drops, early access to new collections, and premium
-            fashion updates delivered directly to your inbox.
-          </p>
+    <p
+      style={{
+        width: "100%",
+        maxWidth: "640px",
+        margin: "16px auto 28px",
+        color: "#6B7280",
+        lineHeight: 1.7,
+        fontSize: "15px",
+        overflowWrap: "break-word",
+      }}
+    >
+      Get exclusive drops, early access to new collections, and premium
+      fashion updates delivered directly to your inbox.
+    </p>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 14,
-              flexWrap: "wrap",
-            }}
-          >
-            <input
-              type="email"
-              placeholder="Enter your email"
-              style={{
-                width: "100%",
-                maxWidth: 360,
-                padding: "16px 18px",
-                borderRadius: 999,
-                border: "1px solid rgba(249,115,22,0.18)",
-                outline: "none",
-                fontSize: 15,
-                background: "#FFF7F0",
-              }}
-            />
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "14px",
+        flexWrap: "wrap",
+        boxSizing: "border-box",
+      }}
+    >
+      <input
+        type="email"
+        placeholder="Enter your email"
+        style={{
+          width: "100%",
+          maxWidth: "360px",
+          minWidth: 0,
+          boxSizing: "border-box",
+          padding: "16px 18px",
+          borderRadius: "999px",
+          border: "1px solid rgba(249,115,22,0.18)",
+          outline: "none",
+          fontSize: "15px",
+          background: "#FFF7F0",
+          color: "#111827",
+        }}
+      />
 
-            <button
-              style={{
-                background: "linear-gradient(135deg,#FB923C,#F97316)",
-                color: "white",
-                border: "none",
-                padding: "16px 28px",
-                borderRadius: 999,
-                fontWeight: 700,
-                cursor: "pointer",
-                boxShadow: "0 12px 24px rgba(249,115,22,0.24)",
-              }}
-            >
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </section>
+      <button
+        type="button"
+        style={{
+          width: "100%",
+          maxWidth: "150px",
+          padding: "16px 24px",
+          borderRadius: "999px",
+          border: "none",
+          background: "#F97316",
+          color: "#FFFFFF",
+          fontSize: "15px",
+          fontWeight: 700,
+          cursor: "pointer",
+          boxShadow: "0 10px 24px rgba(249,115,22,0.25)",
+        }}
+      >
+        Subscribe
+      </button>
+    </div>
+  </div>
+</section>
 
       {/* FINAL CTA */}
       <section style={{ padding: "0 32px 72px" }}>
