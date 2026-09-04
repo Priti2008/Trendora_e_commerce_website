@@ -9,6 +9,19 @@ export default function Navbar({
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
 
+  // SEARCH FUNCTION
+  const handleSearch = () => {
+    const query = searchTerm.trim();
+
+    if (!query) {
+      navigate("/products");
+      return;
+    }
+
+    navigate(`/products?search=${encodeURIComponent(query)}`);
+  };
+
+  // LOGOUT FUNCTION
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -36,9 +49,11 @@ export default function Navbar({
           alignItems: "center",
           justifyContent: "space-between",
           gap: 20,
+          boxSizing: "border-box",
+          width: "100%",
         }}
       >
-        {/* Brand */}
+        {/* ================= BRAND ================= */}
         <div
           onClick={() => navigate("/")}
           style={{
@@ -46,6 +61,7 @@ export default function Navbar({
             display: "flex",
             alignItems: "center",
             gap: 10,
+            flexShrink: 0,
           }}
         >
           <div
@@ -90,74 +106,125 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Search */}
-        <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+        {/* ================= SEARCH ================= */}
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            minWidth: 0,
+          }}
+        >
           <div
             style={{
               width: "100%",
-              maxWidth: 420,
-              position: "relative",
+              maxWidth: 520,
+              display: "flex",
+              gap: 8,
+              minWidth: 0,
             }}
           >
-            <span
+            {/* SEARCH INPUT */}
+            <div
               style={{
-                position: "absolute",
-                left: 16,
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "#9CA3AF",
-                fontSize: 15,
+                flex: 1,
+                position: "relative",
+                minWidth: 0,
               }}
             >
-              🔍
-            </span>
+              <span
+                style={{
+                  position: "absolute",
+                  left: 16,
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#9CA3AF",
+                  fontSize: 15,
+                  pointerEvents: "none",
+                }}
+              >
+                🔍
+              </span>
 
-            <input
-              type="text"
-              placeholder="Search sneakers, apparel, accessories..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
+                style={{
+                  width: "100%",
+                  padding: "14px 18px 14px 42px",
+                  borderRadius: 999,
+                  border: "1px solid rgba(251,146,60,0.18)",
+                  background: "rgba(255,255,255,0.9)",
+                  color: "#111827",
+                  outline: "none",
+                  fontSize: 15,
+                  boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+
+            {/* SEARCH BUTTON */}
+            <button
+              onClick={handleSearch}
               style={{
-                width: "100%",
-                padding: "14px 18px 14px 42px",
+                padding: "0 20px",
+                border: "none",
                 borderRadius: 999,
-                border: "1px solid rgba(251,146,60,0.18)",
-                background: "rgba(255,255,255,0.9)",
-                color: "#111827",
-                outline: "none",
-                fontSize: 15,
-                boxShadow: "0 8px 24px rgba(15,23,42,0.05)",
+                background:
+                  "linear-gradient(135deg,#FB923C,#F97316)",
+                color: "white",
+                fontWeight: 700,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+                boxShadow:
+                  "0 8px 20px rgba(249,115,22,0.25)",
               }}
-            />
+            >
+              Search
+            </button>
           </div>
         </div>
 
-        {/* Actions */}
+        {/* ================= ACTIONS ================= */}
         <div
           style={{
             display: "flex",
             alignItems: "center",
             gap: 12,
+            flexShrink: 0,
           }}
         >
+          {/* USER */}
           {user ? (
             <>
+              {/* ORDERS */}
               <button
                 onClick={() => navigate("/orders")}
                 style={{
-                  border: "1px solid rgba(251,146,60,0.18)",
+                  border:
+                    "1px solid rgba(251,146,60,0.18)",
                   background: "white",
                   color: "#111827",
                   padding: "10px 14px",
                   borderRadius: 14,
                   fontWeight: 600,
                   cursor: "pointer",
-                  boxShadow: "0 6px 18px rgba(15,23,42,0.05)",
+                  boxShadow:
+                    "0 6px 18px rgba(15,23,42,0.05)",
                 }}
               >
                 Orders
               </button>
 
+              {/* USER INFO */}
               <div
                 style={{
                   display: "flex",
@@ -166,8 +233,10 @@ export default function Navbar({
                   background: "white",
                   padding: "8px 12px",
                   borderRadius: 16,
-                  border: "1px solid rgba(251,146,60,0.18)",
-                  boxShadow: "0 6px 18px rgba(15,23,42,0.05)",
+                  border:
+                    "1px solid rgba(251,146,60,0.18)",
+                  boxShadow:
+                    "0 6px 18px rgba(15,23,42,0.05)",
                 }}
               >
                 <div
@@ -175,7 +244,8 @@ export default function Navbar({
                     width: 32,
                     height: 32,
                     borderRadius: "50%",
-                    background: "linear-gradient(135deg,#FDBA74,#FB923C)",
+                    background:
+                      "linear-gradient(135deg,#FDBA74,#FB923C)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -184,10 +254,17 @@ export default function Navbar({
                     fontSize: 14,
                   }}
                 >
-                  {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                  {user.name
+                    ? user.name.charAt(0).toUpperCase()
+                    : "U"}
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
                   <span
                     style={{
                       fontSize: 13,
@@ -211,17 +288,20 @@ export default function Navbar({
                 </div>
               </div>
 
+              {/* LOGOUT */}
               <button
                 onClick={logout}
                 style={{
-                  background: "linear-gradient(135deg,#FB923C,#F97316)",
+                  background:
+                    "linear-gradient(135deg,#FB923C,#F97316)",
                   color: "white",
                   border: "none",
                   padding: "11px 16px",
                   borderRadius: 14,
                   fontWeight: 700,
                   cursor: "pointer",
-                  boxShadow: "0 10px 24px rgba(249,115,22,0.25)",
+                  boxShadow:
+                    "0 10px 24px rgba(249,115,22,0.25)",
                 }}
               >
                 Logout
@@ -229,33 +309,39 @@ export default function Navbar({
             </>
           ) : (
             <>
+              {/* LOGIN */}
               <button
                 onClick={() => navigate("/login")}
                 style={{
-                  border: "1px solid rgba(251,146,60,0.18)",
+                  border:
+                    "1px solid rgba(251,146,60,0.18)",
                   background: "white",
                   color: "#111827",
                   padding: "11px 16px",
                   borderRadius: 14,
                   fontWeight: 700,
                   cursor: "pointer",
-                  boxShadow: "0 6px 18px rgba(15,23,42,0.05)",
+                  boxShadow:
+                    "0 6px 18px rgba(15,23,42,0.05)",
                 }}
               >
                 Login
               </button>
 
+              {/* REGISTER */}
               <button
                 onClick={() => navigate("/register")}
                 style={{
-                  background: "linear-gradient(135deg,#FB923C,#F97316)",
+                  background:
+                    "linear-gradient(135deg,#FB923C,#F97316)",
                   color: "white",
                   border: "none",
                   padding: "11px 16px",
                   borderRadius: 14,
                   fontWeight: 700,
                   cursor: "pointer",
-                  boxShadow: "0 10px 24px rgba(249,115,22,0.25)",
+                  boxShadow:
+                    "0 10px 24px rgba(249,115,22,0.25)",
                 }}
               >
                 Register
@@ -263,17 +349,19 @@ export default function Navbar({
             </>
           )}
 
-          {/* Wishlist */}
+          {/* ================= WISHLIST ================= */}
           <button
             style={{
               position: "relative",
               width: 46,
               height: 46,
               borderRadius: 16,
-              border: "1px solid rgba(251,146,60,0.18)",
+              border:
+                "1px solid rgba(251,146,60,0.18)",
               background: "white",
               cursor: "pointer",
-              boxShadow: "0 6px 18px rgba(15,23,42,0.05)",
+              boxShadow:
+                "0 6px 18px rgba(15,23,42,0.05)",
               fontSize: 18,
             }}
           >
@@ -302,7 +390,7 @@ export default function Navbar({
             )}
           </button>
 
-          {/* Cart */}
+          {/* ================= CART ================= */}
           <button
             onClick={() => navigate("/cart")}
             style={{
@@ -310,10 +398,12 @@ export default function Navbar({
               width: 46,
               height: 46,
               borderRadius: 16,
-              border: "1px solid rgba(251,146,60,0.18)",
+              border:
+                "1px solid rgba(251,146,60,0.18)",
               background: "white",
               cursor: "pointer",
-              boxShadow: "0 6px 18px rgba(15,23,42,0.05)",
+              boxShadow:
+                "0 6px 18px rgba(15,23,42,0.05)",
               fontSize: 18,
             }}
           >
@@ -340,6 +430,61 @@ export default function Navbar({
                 {cartCount}
               </span>
             )}
+          </button>
+        </div>
+      </div>
+
+      {/* ================= MOBILE SEARCH ================= */}
+      <div
+        style={{
+          display: "none",
+          padding: "0 16px 14px",
+        }}
+        className="mobile-search"
+      >
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            width: "100%",
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              padding: "12px 16px",
+              borderRadius: 999,
+              border:
+                "1px solid rgba(251,146,60,0.18)",
+              outline: "none",
+              boxSizing: "border-box",
+            }}
+          />
+
+          <button
+            onClick={handleSearch}
+            style={{
+              padding: "0 16px",
+              border: "none",
+              borderRadius: 999,
+              background:
+                "linear-gradient(135deg,#FB923C,#F97316)",
+              color: "white",
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
+            Search
           </button>
         </div>
       </div>

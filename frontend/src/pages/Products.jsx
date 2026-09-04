@@ -1,64 +1,247 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { getProducts } from "../services/productService";
 import ProductCard from "../components/ProductCard";
 
 function Products() {
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const data = await getProducts();
-      console.log("Products received:", data);
+  // Get search value from URL
+  const search = searchParams.get("search") || "";
 
-      // Important fix
-      setProducts(Array.isArray(data) ? data : data.products || []);
-    } catch (err) {
-      console.error("Failed to fetch products", err);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+
+        console.log("Products received:", data);
+
+        // Handle both array and { products: [] } response
+        const productList = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.products)
+          ? data.products
+          : [];
+
+        setProducts(productList);
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+        setProducts([]);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Search products
+  const filteredProducts = products.filter((product) => {
+    const name = product?.name || "";
+
+    return name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+  });
+
+  // Update search
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+
+    if (value.trim() === "") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ search: value });
     }
   };
 
-  fetchProducts();
-}, []);
-
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(search.toLowerCase())
-  );
-
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Products</h2>
-
-      <input
-        type="text"
-        placeholder="Search products..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+    <div
+      style={{
+        width: "100%",
+        maxWidth: "1280px",
+        margin: "0 auto",
+        padding: "30px 20px 60px",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* PAGE TITLE */}
+      <div
         style={{
-          padding: "10px",
-          width: "100%",
-          maxWidth: "400px",
-          marginBottom: "20px",
-          borderRadius: "8px",
-          border: "1px solid #ccc",
+          textAlign: "center",
+          marginBottom: "30px",
         }}
-      />
-
-      {filteredProducts.length === 0 ? (
-        <p>No products found.</p>
-      ) : (
-        <div
+      >
+        <h1
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "20px",
+            margin: 0,
+            fontSize: "clamp(28px, 5vw, 42px)",
+            fontWeight: 800,
+            color: "#111827",
           }}
         >
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          Products
+        </h1>
+
+        <p
+          style={{
+            marginTop: "10px",
+            color: "#6B7280",
+          }}
+        >
+          Discover our latest fashion and lifestyle products
+        </p>
+      </div>
+
+      {/* SEARCH BOX */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "35px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            maxWidth: "600px",
+            gap: "10px",
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={handleSearchChange}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              padding: "14px 18px",
+              borderRadius: "999px",
+              border: "1px solid #E5E7EB",
+              outline: "none",
+              fontSize: "15px",
+              boxSizing: "border-box",
+              background: "#FFFFFF",
+            }}
+          />
+
+          <button
+            onClick={() => {
+              if (search.trim()) {
+                setSearchParams({
+                  search: search.trim(),
+                });
+              }
+            }}
+            style={{
+              padding: "0 22px",
+              border: "none",
+              borderRadius: "999px",
+              background:
+                "linear-gradient(135deg, #FB923C, #F97316)",
+              color: "#FFFFFF",
+              fontWeight: 700,
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Search
+          </button>
         </div>
+      </div>
+
+      {/* SEARCH RESULT MESSAGE */}
+      {search && (
+        <div
+          style={{
+            marginBottom: "25px",
+            textAlign: "center",
+            color: "#374151",
+            fontSize: "16px",
+          }}
+        >
+          Search results for{" "}
+          <strong>"{search}"</strong>
+        </div>
+      )}
+
+      {/* PRODUCTS */}
+      {filteredProducts.length === 0 ? (
+        <div
+          style={{
+            textAlign: "center",
+            padding: "60px 20px",
+            background: "#FFFFFF",
+            borderRadius: "20px",
+            border: "1px solid #E5E7EB",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "45px",
+              marginBottom: "15px",
+            }}
+          >
+            🔍
+          </div>
+
+          <h2
+            style={{
+              margin: "0 0 10px",
+              color: "#111827",
+            }}
+          >
+            No products found
+          </h2>
+
+          <p
+            style={{
+              color: "#6B7280",
+              margin: 0,
+            }}
+          >
+            {search
+              ? `We couldn't find any product matching "${search}".`
+              : "No products are currently available."}
+          </p>
+
+          {search && (
+            <button
+              onClick={() => setSearchParams({})}
+              style={{
+                marginTop: "20px",
+                padding: "12px 22px",
+                border: "none",
+                borderRadius: "10px",
+                background: "#F97316",
+                color: "#FFFFFF",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              Show All Products
+            </button>
+          )}
+        </div>
+      ) : (
+        <>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns:
+                "repeat(auto-fit, minmax(250px, 1fr))",
+              gap: "24px",
+            }}
+          >
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+              />
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
