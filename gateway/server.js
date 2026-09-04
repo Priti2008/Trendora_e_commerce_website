@@ -6,11 +6,18 @@ const app = express();
 
 app.use(cors());
 
+const PRODUCT_SERVICE_URL =
+  process.env.PRODUCT_SERVICE_URL || "http://localhost:5002";
+const USER_SERVICE_URL =
+  process.env.USER_SERVICE_URL || "http://localhost:5001";
+const ORDER_SERVICE_URL =
+  process.env.ORDER_SERVICE_URL || "http://localhost:5003";
+
 // Product Service
 app.use(
   "/api/products",
   createProxyMiddleware({
-    target: "http://localhost:5002",
+    target: PRODUCT_SERVICE_URL,
     changeOrigin: true,
   })
 );
@@ -18,7 +25,7 @@ app.use(
 app.use(
   "/api/users",
   createProxyMiddleware({
-    target: "http://localhost:5001",
+    target: USER_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
       "^/api/users": "/",
@@ -30,7 +37,7 @@ app.use(
 app.use(
   "/api/orders",
   createProxyMiddleware({
-    target: "http://localhost:5003",
+    target: ORDER_SERVICE_URL,
     changeOrigin: true,
     pathRewrite: {
       "^/api/orders": "",

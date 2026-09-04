@@ -9,11 +9,12 @@ function Products() {
 
   // Get search value from URL
   const search = searchParams.get("search") || "";
+  const normalizedSearch = search.trim().toLowerCase();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await getProducts();
+        const data = await getProducts(search);
 
         console.log("Products received:", data);
 
@@ -32,15 +33,22 @@ function Products() {
     };
 
     fetchProducts();
-  }, []);
+  }, [search]);
 
   // Search products
   const filteredProducts = products.filter((product) => {
-    const name = product?.name || "";
+    if (!normalizedSearch) return true;
 
-    return name
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    const searchableText = [
+      product?.name,
+      product?.category,
+      product?.description,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+    return searchableText.includes(normalizedSearch);
   });
 
   // Update search
@@ -236,7 +244,7 @@ function Products() {
           >
             {filteredProducts.map((product) => (
               <ProductCard
-                key={product.id}
+                key={product.id || product._id}
                 product={product}
               />
             ))}

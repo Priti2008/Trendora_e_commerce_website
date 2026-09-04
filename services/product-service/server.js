@@ -15,6 +15,25 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
+app.get("/health", async (req, res) => {
+  try {
+    await pool.query("SELECT 1");
+
+    res.status(200).json({
+      service: "product-service",
+      api: "ok",
+      database: "connected",
+    });
+  } catch (err) {
+    res.status(200).json({
+      service: "product-service",
+      api: "ok",
+      database: "disconnected",
+      message: err.message || "Unable to connect to PostgreSQL",
+    });
+  }
+});
+
 // Home Route
 app.get("/", (req, res) => {
   res.send("🚀 Trendora Backend is Running...");
