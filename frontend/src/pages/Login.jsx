@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -28,6 +30,7 @@ export default function Login() {
 
     try {
       setLoading(true);
+      setError("");
 
       const res = await fetch("http://localhost:5000/api/login", {
         method: "POST",
@@ -40,14 +43,19 @@ export default function Login() {
       const data = await res.json();
 
       if (data.success) {
+        // Save logged-in user
         localStorage.setItem("user", JSON.stringify(data.user));
+
+        // Save JWT token
         localStorage.setItem("token", data.token);
 
-        window.location.href = "/";
+        // React Router navigation
+        navigate("/", { replace: true });
       } else {
         setError(data.message || "Invalid email or password.");
       }
     } catch (error) {
+      console.error("Login error:", error);
       setError("Unable to connect to server.");
     } finally {
       setLoading(false);
@@ -87,6 +95,7 @@ export default function Login() {
             value={form.email}
             onChange={handleChange}
             style={input}
+            autoComplete="email"
           />
 
           {/* Password */}
@@ -99,11 +108,16 @@ export default function Login() {
             value={form.password}
             onChange={handleChange}
             style={input}
+            autoComplete="current-password"
           />
 
           {/* Forgot Password */}
           <div style={forgotContainer}>
-            <a href="#" style={forgot}>
+            <a
+              href="#"
+              style={forgot}
+              onClick={(e) => e.preventDefault()}
+            >
               Forgot Password?
             </a>
           </div>
@@ -112,7 +126,11 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            style={button}
+            style={{
+              ...button,
+              opacity: loading ? 0.7 : 1,
+              cursor: loading ? "not-allowed" : "pointer",
+            }}
           >
             {loading ? "Signing In..." : "Sign In"}
           </button>
@@ -285,7 +303,6 @@ const button = {
   color: "#ffffff",
   fontSize: "15px",
   fontWeight: "700",
-  cursor: "pointer",
   boxShadow:
     "0 8px 20px rgba(37, 99, 235, 0.22)",
 };
