@@ -8,93 +8,198 @@ export default function App() {
   const [cartCount, setCartCount] = useState(0);
   const [wishlist, setWishlist] = useState([]);
 
-  const products = [
-  {
-    id: 1,
-    name: "Air Max Elite",
-    price: 4999,
-    rating: 4.9,
-    image:
-      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 2,
-    name: "Street Runner",
-    price: 4599,
-    rating: 4.8,
-    image:
-      "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 3,
-    name: "Urban Force",
-    price: 5199,
-    rating: 4.9,
-    image:
-      "https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 4,
-    name: "Pulse Watch",
-    price: 7999,
-    rating: 4.7,
-    image:
-      "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 5,
-    name: "Classic Leather",
-    price: 3799,
-    rating: 4.7,
-    image:
-      "https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 6,
-    name: "Sport Runner X",
-    price: 4299,
-    rating: 4.8,
-    image:
-      "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 7,
-    name: "Canvas Sneakers",
-    price: 2899,
-    rating: 4.6,
-    image:
-      "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 8,
-    name: "Premium Backpack",
-    price: 2499,
-    rating: 4.8,
-    image:
-      "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 9,
-    name: "Urban Sunglasses",
-    price: 1999,
-    rating: 4.5,
-    image:
-      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
-  },
-];
+const products = [
+    {
+      id: 1,
+      name: "Air Max Elite",
+      price: 4999,
+      rating: 4.9,
+      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 2,
+      name: "Street Runner",
+      price: 4599,
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 3,
+      name: "Urban Force",
+      price: 5199,
+      rating: 4.9,
+      image: "https://images.unsplash.com/photo-1605348532760-6753d2c43329?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 4,
+      name: "Pulse Watch",
+      price: 7999,
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 5,
+      name: "Classic Leather",
+      price: 3799,
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 6,
+      name: "Sport Runner X",
+      price: 4299,
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 7,
+      name: "Canvas Sneakers",
+      price: 2899,
+      rating: 4.6,
+      image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 8,
+      name: "Premium Backpack",
+      price: 2499,
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 9,
+      name: "Urban Sunglasses",
+      price: 1999,
+      rating: 4.5,
+      image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 10,
+      name: "Classic White Tee",
+      price: 1299,
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 11,
+      name: "Premium Hoodie",
+      price: 2499,
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 12,
+      name: "Denim Jacket",
+      price: 3499,
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 13,
+      name: "Performance Watch",
+      price: 6499,
+      rating: 4.6,
+      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 14,
+      name: "Everyday Cap",
+      price: 899,
+      rating: 4.5,
+      image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 15,
+      name: "Travel Sneakers",
+      price: 3999,
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 16,
+      name: "Minimal Wallet",
+      price: 1499,
+      rating: 4.6,
+      image: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 17,
+      name: "Classic Backpack",
+      price: 2999,
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 18,
+      name: "Running Shorts",
+      price: 1599,
+      rating: 4.5,
+      image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 19,
+      name: "Aviator Shades",
+      price: 2299,
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 20,
+      name: "Urban Crossbody Bag",
+      price: 2199,
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1594223274512-ad4803739b7c?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 21,
+      name: "Comfort Slip Ons",
+      price: 2699,
+      rating: 4.6,
+      image: "https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 22,
+      name: "Oversized Street Tee",
+      price: 1599,
+      rating: 4.7,
+      image: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 23,
+      name: "Tech Running Shoes",
+      price: 5799,
+      rating: 4.9,
+      image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=800&q=80",
+    },
+    {
+      id: 24,
+      name: "Premium Belt",
+      price: 1799,
+      rating: 4.6,
+      image: "https://images.unsplash.com/photo-1624222247344-550fb60583dc?auto=format&fit=crop&w=800&q=80",
+    },
+  ];
 
 
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartCount(saved.length);
+    setCartCount(saved.reduce((total, item) => total + (item.quantity || 1), 0));
   }, []);
 
   const addToCart = (product) => {
     const existing = JSON.parse(localStorage.getItem("cart")) || [];
-    const updated = [...existing, product];
+    const found = existing.find((item) => item.id === product.id);
+
+    const updated = found
+      ? existing.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: (item.quantity || 1) + 1 }
+            : item
+        )
+      : [...existing, { ...product, quantity: 1 }];
+
     localStorage.setItem("cart", JSON.stringify(updated));
-    setCartCount(updated.length);
+    setCartCount(updated.reduce((total, item) => total + (item.quantity || 1), 0));
   };
 
   const toggleWishlist = (id) => {
