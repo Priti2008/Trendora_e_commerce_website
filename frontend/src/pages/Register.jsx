@@ -25,7 +25,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.email || !form.password) {
+    if (!form.name.trim() || !form.email.trim() || !form.password) {
       setError("Please fill in all fields.");
       return;
     }
@@ -44,22 +44,27 @@ export default function Register() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim().toLowerCase(),
+          password: form.password,
+        }),
       });
 
       const data = await res.json();
 
-      if (data.success) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        if (data.token) {
-          localStorage.setItem("token", data.token);
-        }
-
-        navigate("/", { replace: true });
-      } else {
+      if (!res.ok || !data.success) {
         setError(data.message || "Registration failed.");
+        return;
       }
+
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Registration error:", error);
       setError("Unable to connect to server.");
@@ -79,11 +84,7 @@ export default function Register() {
           Join Trendora and start shopping
         </p>
 
-        {error && (
-          <div style={errorBox}>
-            {error}
-          </div>
-        )}
+        {error && <div style={errorBox}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <label style={label}>Full Name</label>

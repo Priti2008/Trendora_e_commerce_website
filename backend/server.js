@@ -29,17 +29,43 @@ app.post("/api/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validate fields
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, email and password are required",
+      });
+    }
+
+    // Clean input
+    const cleanName = name.trim();
+    const cleanEmail = email.trim().toLowerCase();
+
+    if (!cleanName) {
+      return res.status(400).json({
+        success: false,
+        message: "Name is required",
+      });
+    }
+
+    if (!cleanEmail) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    // Validate password length
     if (password.length < 6) {
-  return res.status(400).json({
-    success: false,
-    message: "Password must be at least 6 characters",
-  });
-}
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters",
+      });
+    }
 
     // Check if user already exists
     const existingUser = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
+      (user) => user.email === cleanEmail
     );
 
     if (existingUser) {
@@ -55,8 +81,8 @@ app.post("/api/register", async (req, res) => {
     // Create user
     const newUser = {
       id: Date.now(),
-      name,
-      email: email.toLowerCase(),
+      name: cleanName,
+      email: cleanEmail,
       password: hashedPassword,
     };
 
@@ -74,7 +100,8 @@ app.post("/api/register", async (req, res) => {
       }
     );
 
-    res.json({
+    // Send response
+    res.status(201).json({
       success: true,
       message: "User registered successfully",
       token,
@@ -99,7 +126,7 @@ app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate fields
+    // Validate required fields
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -107,9 +134,12 @@ app.post("/api/login", async (req, res) => {
       });
     }
 
+    // Clean email
+    const cleanEmail = email.trim().toLowerCase();
+
     // Find user
     const user = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
+      (user) => user.email === cleanEmail
     );
 
     if (!user) {
@@ -120,7 +150,10 @@ app.post("/api/login", async (req, res) => {
     }
 
     // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
 
     if (!isMatch) {
       return res.status(400).json({
@@ -141,6 +174,7 @@ app.post("/api/login", async (req, res) => {
       }
     );
 
+    // Send response
     res.json({
       success: true,
       message: "Login successful",
@@ -190,7 +224,9 @@ const authenticateToken = (req, res, next) => {
 
 // Profile route
 app.get("/api/profile", authenticateToken, (req, res) => {
-  const user = users.find((u) => u.id === req.user.id);
+  const user = users.find(
+    (user) => user.id === req.user.id
+  );
 
   if (!user) {
     return res.status(404).json({
@@ -209,7 +245,35 @@ app.get("/api/profile", authenticateToken, (req, res) => {
   });
 });
 
+// Logout route
+app.post("/api/logout", authenticateToken, (req, res) => {
+  res.json({
+    success: true,
+    message: "Logout successful",
+  });
+});
+
+// 404 route
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
+});
+
+// Global error handler
+app.use((error, req, res, next) => {
+  console.error("Server error:", error);
+
+  res.status(500).json({
+    success: false,
+    message: "Internal server error",
+  });
+});
+
 // Start server
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
