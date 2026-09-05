@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,26 +10,30 @@ export default function Login() {
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.email.trim() || !form.password.trim()) {
-      alert("Please enter email and password.");
+    if (!form.email || !form.password) {
+      setError("Please enter your email and password.");
       return;
     }
 
     try {
       setLoading(true);
+      setError("");
 
-      const res = await fetch("http://localhost:5000/api/users/login", {
+      const res = await fetch("http://localhost:5000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,137 +44,223 @@ export default function Login() {
       const data = await res.json();
 
       if (data.success) {
-        // Save login information
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("token", data.token);
 
-        // React Router navigation
-        // Do NOT use window.location.href here
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+
         navigate("/", { replace: true });
       } else {
-        alert(data.message || "Invalid email or password.");
+        setError(data.message || "Invalid email or password.");
       }
     } catch (error) {
       console.error("Login error:", error);
-      alert("Unable to connect to the server. Please try again.");
+      setError("Unable to connect to server.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={container}>
+    <div style={page}>
       <div style={card}>
-        <h2 style={title}>Login</h2>
+        <div style={logo}>🛍️</div>
+
+        <h1 style={title}>Welcome Back</h1>
+
+        <p style={subtitle}>
+          Login to your Trendora account
+        </p>
+
+        {error && <div style={errorBox}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
+          <label style={label}>Email Address</label>
+
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Enter your email"
             value={form.email}
             onChange={handleChange}
             style={input}
-            disabled={loading}
             autoComplete="email"
           />
+
+          <label style={label}>Password</label>
 
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="Enter your password"
             value={form.password}
             onChange={handleChange}
             style={input}
-            disabled={loading}
             autoComplete="current-password"
           />
 
+          <div style={forgotContainer}>
+            <a
+              href="#"
+              style={forgot}
+              onClick={(e) => e.preventDefault()}
+            >
+              Forgot Password?
+            </a>
+          </div>
+
           <button
             type="submit"
+            disabled={loading}
             style={{
               ...button,
               opacity: loading ? 0.7 : 1,
               cursor: loading ? "not-allowed" : "pointer",
             }}
-            disabled={loading}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
-        <button
-          type="button"
-          onClick={() => navigate("/register")}
-          style={registerButton}
-          disabled={loading}
-        >
-          Create an account
-        </button>
+        <p style={registerText}>
+          Don't have an account?{" "}
+          <Link to="/register" style={registerLink}>
+            Create Account
+          </Link>
+        </p>
+
+        <div style={security}>
+          🔒 Secure login • Your data is protected
+        </div>
       </div>
     </div>
   );
 }
 
-const container = {
+const page = {
   minHeight: "100vh",
-  background: "#0b1220",
+  background: "linear-gradient(135deg, #eef4ff, #f8fafc)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  color: "white",
-  fontFamily: "Arial, sans-serif",
   padding: "20px",
   boxSizing: "border-box",
+  fontFamily: "Arial, sans-serif",
 };
 
 const card = {
-  background: "#111827",
-  padding: "40px",
-  borderRadius: "20px",
-  width: "360px",
-  maxWidth: "100%",
-  border: "1px solid #1e293b",
+  width: "100%",
+  maxWidth: "420px",
+  background: "#ffffff",
+  padding: "45px",
+  borderRadius: "24px",
   boxSizing: "border-box",
+  boxShadow: "0 20px 60px rgba(15, 23, 42, 0.12)",
+  border: "1px solid #e5e7eb",
+};
+
+const logo = {
+  width: "58px",
+  height: "58px",
+  margin: "0 auto 20px",
+  borderRadius: "16px",
+  background: "linear-gradient(135deg, #2563eb, #06b6d4)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: "27px",
 };
 
 const title = {
-  marginBottom: "24px",
   textAlign: "center",
-  fontSize: "28px",
+  margin: "0",
+  fontSize: "32px",
+  fontWeight: "800",
+  color: "#111827",
+};
+
+const subtitle = {
+  textAlign: "center",
+  color: "#64748b",
+  fontSize: "14px",
+  marginTop: "10px",
+  marginBottom: "32px",
+};
+
+const errorBox = {
+  background: "#fef2f2",
+  color: "#dc2626",
+  border: "1px solid #fecaca",
+  borderRadius: "10px",
+  padding: "11px",
+  marginBottom: "20px",
+  textAlign: "center",
+  fontSize: "13px",
+};
+
+const label = {
+  display: "block",
+  fontSize: "13px",
+  fontWeight: "700",
+  color: "#374151",
+  marginBottom: "8px",
 };
 
 const input = {
   width: "100%",
-  padding: "12px",
-  marginBottom: "16px",
-  borderRadius: "10px",
-  border: "1px solid #374151",
-  background: "#0b1220",
-  color: "white",
+  height: "50px",
+  padding: "0 15px",
+  marginBottom: "20px",
   boxSizing: "border-box",
+  border: "1px solid #d1d5db",
+  borderRadius: "11px",
   outline: "none",
-  fontSize: "15px",
+  background: "#f9fafb",
+  color: "#111827",
+  fontSize: "14px",
+};
+
+const forgotContainer = {
+  textAlign: "right",
+  marginBottom: "22px",
+};
+
+const forgot = {
+  color: "#2563eb",
+  fontSize: "13px",
+  textDecoration: "none",
+  fontWeight: "600",
 };
 
 const button = {
   width: "100%",
-  background: "#2563eb",
-  color: "white",
+  height: "52px",
   border: "none",
-  padding: "12px",
-  borderRadius: "10px",
-  fontWeight: "bold",
+  borderRadius: "11px",
+  background: "linear-gradient(90deg, #2563eb, #06b6d4)",
+  color: "#ffffff",
   fontSize: "15px",
+  fontWeight: "700",
+  boxShadow: "0 8px 20px rgba(37, 99, 235, 0.22)",
 };
 
-const registerButton = {
-  width: "100%",
-  marginTop: "14px",
-  background: "transparent",
-  color: "#60a5fa",
-  border: "none",
-  padding: "10px",
-  cursor: "pointer",
-  fontSize: "14px",
+const registerText = {
+  textAlign: "center",
+  color: "#64748b",
+  fontSize: "13px",
+  marginTop: "28px",
+};
+
+const registerLink = {
+  color: "#2563eb",
+  fontWeight: "700",
+  textDecoration: "none",
+};
+
+const security = {
+  textAlign: "center",
+  color: "#94a3b8",
+  fontSize: "11px",
+  marginTop: "25px",
 };
