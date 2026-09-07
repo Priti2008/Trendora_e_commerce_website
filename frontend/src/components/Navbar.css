@@ -1,31 +1,144 @@
+/* ================================
+   TRENDORA NAVBAR
+================================ */
+
 .navbar {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-
-  padding: 18px 40px;
-
-  background: #111;
-  color: white;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background: #111827;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
+/* Logo */
 .logo {
+  color: #ffffff;
   font-size: 28px;
-  font-weight: bold;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
 }
 
+.logo:hover {
+  color: #f97316;
+}
+
+/* Navigation menu */
 .menu {
   display: flex;
-  gap: 25px;
+  align-items: center;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
+/* Menu links */
 .menu a {
+  position: relative;
+  color: #ffffff;
   text-decoration: none;
-  color: white;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
+  transition: color 0.25s ease;
 }
 
+/* Hover effect */
 .menu a:hover {
-  color: #ff4081;
+  color: #f97316;
+}
+
+/* Active/underline effect */
+.menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: 0;
+  height: 2px;
+  background: #f97316;
+  transition: width 0.25s ease;
+}
+
+.menu a:hover::after {
+  width: 100%;
+}
+
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 900px) {
+  .navbar {
+    padding: 15px 24px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  .menu {
+    gap: 18px;
+  }
+
+  .menu a {
+    font-size: 14px;
+  }
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 650px) {
+  .navbar {
+    flex-direction: column;
+    gap: 14px;
+    padding: 15px 16px;
+  }
+
+  .logo {
+    font-size: 25px;
+  }
+
+  .menu {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 18px;
+  }
+
+  .menu a {
+    font-size: 14px;
+  }
+}
+
+/* ================================
+   SMALL MOBILE
+================================ */
+
+@media (max-width: 400px) {
+  .navbar {
+    padding: 14px 12px;
+  }
+
+  .logo {
+    font-size: 22px;
+  }
+
+  .menu {
+    gap: 10px 14px;
+  }
+
+  .menu a {
+    font-size: 13px;
+  }
 }
