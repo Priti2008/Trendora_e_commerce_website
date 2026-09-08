@@ -1,18 +1,21 @@
+import { useEffect, useState } from "react";
+
 export default function Orders() {
-  const orders = [
-    {
-      id: "#TRD2026-7842",
-      date: "3 Aug 2026",
-      total: "₹29,597",
-      status: "Delivered",
-    },
-    {
-      id: "#TRD2026-7819",
-      date: "1 Aug 2026",
-      total: "₹4,999",
-      status: "Shipped",
-    },
-  ];
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const savedOrder = localStorage.getItem("lastOrder");
+
+    if (savedOrder) {
+      try {
+        const order = JSON.parse(savedOrder);
+        setOrders([order]);
+      } catch (error) {
+        console.error("Failed to read order:", error);
+        setOrders([]);
+      }
+    }
+  }, []);
 
   return (
     <div
@@ -20,62 +23,129 @@ export default function Orders() {
         minHeight: "100vh",
         background: "#0b1220",
         color: "white",
-        fontFamily: "Arial",
-        padding: "40px",
+        fontFamily: "Arial, sans-serif",
+        padding: "40px 20px",
+        boxSizing: "border-box",
       }}
     >
-      <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-        <h1 style={{ marginBottom: "30px" }}>My Orders</h1>
+      <div
+        style={{
+          maxWidth: "900px",
+          margin: "0 auto",
+        }}
+      >
+        <h1
+          style={{
+            marginBottom: "30px",
+            fontSize: "32px",
+          }}
+        >
+          My Orders
+        </h1>
 
-        {orders.map((order) => (
+        {orders.length === 0 ? (
           <div
-            key={order.id}
             style={{
               background: "#111827",
-              padding: "24px",
-              borderRadius: "18px",
-              marginBottom: "18px",
               border: "1px solid #1e293b",
+              borderRadius: "18px",
+              padding: "50px 20px",
+              textAlign: "center",
             }}
           >
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "12px",
+                fontSize: "50px",
+                marginBottom: "15px",
               }}
             >
-              <strong>{order.id}</strong>
-              <span style={{ color: "#94a3b8" }}>{order.date}</span>
+              📦
             </div>
 
-            <div
+            <h2
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                marginBottom: "10px",
               }}
             >
-              <span>Total: {order.total}</span>
+              No orders yet
+            </h2>
 
-              <span
+            <p
+              style={{
+                color: "#94a3b8",
+                margin: 0,
+              }}
+            >
+              Your orders will appear here after you place an order.
+            </p>
+          </div>
+        ) : (
+          orders.map((order, index) => (
+            <div
+              key={order.id || index}
+              style={{
+                background: "#111827",
+                padding: "24px",
+                borderRadius: "18px",
+                marginBottom: "18px",
+                border: "1px solid #1e293b",
+              }}
+            >
+              <div
                 style={{
-                  background:
-                    order.status === "Delivered"
-                      ? "#14532d"
-                      : "#1e3a8a",
-                  color: "white",
-                  padding: "6px 12px",
-                  borderRadius: "999px",
-                  fontSize: "14px",
-                  fontWeight: "bold",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "15px",
+                  gap: "15px",
+                  flexWrap: "wrap",
                 }}
               >
-                {order.status}
-              </span>
+                <strong>
+                  {order.id || `#TRD-${Date.now()}`}
+                </strong>
+
+                <span
+                  style={{
+                    color: "#94a3b8",
+                  }}
+                >
+                  {order.date || new Date().toLocaleDateString()}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "15px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <span>
+                  Total: {order.total || order.amount || "₹0"}
+                </span>
+
+                <span
+                  style={{
+                    background:
+                      order.status === "Delivered"
+                        ? "#14532d"
+                        : "#1e3a8a",
+                    color: "white",
+                    padding: "6px 12px",
+                    borderRadius: "999px",
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {order.status || "Confirmed"}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
