@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -9,12 +11,27 @@ export default function Login() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    setMessage("");
     setError("");
+    setMessage("");
+
+    if (!form.email || !form.password) {
+      setError("Please enter email and password.");
+      return;
+    }
 
     try {
       setLoading(true);
@@ -27,108 +44,64 @@ export default function Login() {
         body: JSON.stringify(form),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
       if (data.success) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("token", data.token);
 
-        window.location.href = "/";
+        setMessage("Login successful!");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 500);
       } else {
         setError(data.message || "Invalid email or password.");
       }
-    } catch (error) {
-      setError("Unable to connect to server.");
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(
+        "Unable to connect to server. Make sure backend is running."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "20px",
-        background: "#f8fafc",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "500px",
-          background: "#ffffff",
-          padding: "40px",
-          borderRadius: "24px",
-          boxShadow:
-            "0 15px 40px rgba(0,0,0,0.08)",
-        }}
-      >
-        <h1
-          style={{
-            textAlign: "center",
-            marginBottom: "10px",
-          }}
-        >
-          Welcome Back
-        </h1>
+    <div style={page}>
+      <div style={card}>
+        {/* Logo */}
+        <div style={logo}>🛍️</div>
 
-        <p
-          style={{
-            textAlign: "center",
-            marginBottom: "30px",
-            color: "#6b7280",
-          }}
-        >
+        {/* Title */}
+        <h1 style={title}>Welcome Back</h1>
+
+        <p style={subtitle}>
           Login to your Trendora account
         </p>
 
+        {/* Success Message */}
         {message && (
-          <div
-            style={{
-              padding: "12px",
-              marginBottom: "20px",
-              borderRadius: "10px",
-              background: "#ecfdf5",
-              color: "#059669",
-              textAlign: "center",
-            }}
-          >
+          <div style={successBox}>
             {message}
           </div>
         )}
 
+        {/* Error Message */}
         {error && (
-          <div
-            style={{
-              padding: "12px",
-              marginBottom: "20px",
-              borderRadius: "10px",
-              background: "#fef2f2",
-              color: "#dc2626",
-              textAlign: "center",
-            }}
-          >
+          <div style={errorBox}>
             {error}
           </div>
         )}
 
         <form onSubmit={handleLogin}>
-
-          <label
-            style={{
-              display: "block",
-              marginBottom: "8px",
-              fontWeight: "600",
-            }}
-          >
-            Email Address
-          </label>
+          {/* Email */}
+          <label style={label}>Email Address</label>
 
           <input
             type="email"
+            name="email"
             placeholder="Enter your email"
             value={form.email}
             onChange={handleChange}
@@ -140,6 +113,7 @@ export default function Login() {
 
           <input
             type="password"
+            name="password"
             placeholder="Enter your password"
             value={form.password}
             onChange={handleChange}
@@ -148,48 +122,47 @@ export default function Login() {
 
           {/* Forgot Password */}
           <div style={forgotContainer}>
-            <a href="#" style={forgot}>
+            <a
+              href="#"
+              onClick={(e) => e.preventDefault()}
+              style={forgot}
+            >
               Forgot Password?
             </a>
           </div>
 
-          {/* Login */}
+          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
-            style={button}
+            style={{
+              ...button,
+              opacity: loading ? 0.7 : 1,
+            }}
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
-
         </form>
 
-        <p
-          style={{
-            textAlign: "center",
-            marginTop: "25px",
-            color: "#6b7280",
-          }}
-        >
+        {/* Register */}
+        <p style={registerText}>
           Don't have an account?{" "}
           <span
-            onClick={() =>
-              navigate("/register")
-            }
-            style={{
-              color: "#2563eb",
-              fontWeight: "700",
-              cursor: "pointer",
-            }}
+            onClick={() => navigate("/register")}
+            style={registerLink}
           >
             Create Account
           </span>
+        </p>
+
+        {/* Security */}
+        <p style={security}>
+          🔒 Secure login • Your data is protected
         </p>
       </div>
     </div>
   );
 }
-
 
 /* ================================
    PAGE
@@ -207,7 +180,6 @@ const page = {
   fontFamily: "Arial, sans-serif",
 };
 
-
 /* ================================
    CARD
 ================================ */
@@ -223,7 +195,6 @@ const card = {
     "0 20px 60px rgba(15, 23, 42, 0.12)",
   border: "1px solid #e5e7eb",
 };
-
 
 /* ================================
    LOGO
@@ -242,9 +213,8 @@ const logo = {
   fontSize: "27px",
 };
 
-
 /* ================================
-   TEXT
+   TITLE
 ================================ */
 
 const title = {
@@ -255,6 +225,10 @@ const title = {
   color: "#111827",
 };
 
+/* ================================
+   SUBTITLE
+================================ */
+
 const subtitle = {
   textAlign: "center",
   color: "#64748b",
@@ -263,6 +237,20 @@ const subtitle = {
   marginBottom: "32px",
 };
 
+/* ================================
+   SUCCESS
+================================ */
+
+const successBox = {
+  background: "#ecfdf5",
+  color: "#059669",
+  border: "1px solid #a7f3d0",
+  borderRadius: "10px",
+  padding: "11px",
+  marginBottom: "20px",
+  textAlign: "center",
+  fontSize: "13px",
+};
 
 /* ================================
    ERROR
@@ -279,9 +267,8 @@ const errorBox = {
   fontSize: "13px",
 };
 
-
 /* ================================
-   INPUT
+   LABEL
 ================================ */
 
 const label = {
@@ -291,6 +278,10 @@ const label = {
   color: "#374151",
   marginBottom: "8px",
 };
+
+/* ================================
+   INPUT
+================================ */
 
 const input = {
   width: "100%",
@@ -305,7 +296,6 @@ const input = {
   color: "#111827",
   fontSize: "14px",
 };
-
 
 /* ================================
    FORGOT PASSWORD
@@ -322,7 +312,6 @@ const forgot = {
   textDecoration: "none",
   fontWeight: "600",
 };
-
 
 /* ================================
    BUTTON
@@ -343,7 +332,6 @@ const button = {
     "0 8px 20px rgba(37, 99, 235, 0.22)",
 };
 
-
 /* ================================
    REGISTER
 ================================ */
@@ -359,8 +347,8 @@ const registerLink = {
   color: "#2563eb",
   fontWeight: "700",
   textDecoration: "none",
+  cursor: "pointer",
 };
-
 
 /* ================================
    SECURITY
