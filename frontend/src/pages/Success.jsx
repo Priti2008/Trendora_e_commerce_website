@@ -186,7 +186,7 @@ export default function Success() {
             fontSize: "14px",
           }}
         >
-          Thank you for choosing Trendora ❤️
+          Thank you  choosing Trendora ❤️
         </p>
       </div>
     </div>
