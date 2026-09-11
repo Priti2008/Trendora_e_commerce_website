@@ -103,7 +103,7 @@ function Home() {
         </div>
 
         <div style={card}>
-          <h3>👟 Sneakers</h3>
+          <h3>👟 Sneaker </h3>
           <p>Premium branded shoes</p>
         </div>
 
