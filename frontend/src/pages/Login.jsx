@@ -81,7 +81,7 @@ export default function Login() {
       // =========================
       // LOGIN SUCCESS
       // =========================
-      if (res.ok && data.success) {
+      if (res.ok && (data.success !== false) && (data.token || data.user)) {
         // Save user
         if (data.user) {
           localStorage.setItem(

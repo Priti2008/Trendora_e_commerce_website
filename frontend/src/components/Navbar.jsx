@@ -205,6 +205,25 @@ export default function Navbar({
           {/* USER */}
           {user ? (
             <>
+              {/* ADMIN - ONLY SHOWN TO ADMIN USERS */}
+              {(user.role === "admin" || user.email === "admin@trendora.com") && (
+                <button
+                  onClick={() => navigate("/admin")}
+                  style={{
+                    border: "1px solid rgba(239,68,68,0.3)",
+                    background: "#fef2f2",
+                    color: "#dc2626",
+                    padding: "10px 14px",
+                    borderRadius: 14,
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    boxShadow: "0 6px 18px rgba(15,23,42,0.05)",
+                  }}
+                >
+                  ⚙️ Admin
+                </button>
+              )}
+
               {/* ORDERS */}
               <button
                 onClick={() => navigate("/orders")}

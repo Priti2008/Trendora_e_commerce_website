@@ -46,9 +46,10 @@ export default function Register() {
 
       const data = await res.json();
 
-      if (data.success) {
-        localStorage.setItem("user", JSON.stringify(data.user));
-
+      if (res.ok && (data.success || data.user)) {
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        }
         window.location.href = "/";
       } else {
         setError(data.message || "Registration failed.");

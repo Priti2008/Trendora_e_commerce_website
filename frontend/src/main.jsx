@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Success from "./pages/Success";
 import Products from "./pages/Products";
+import Admin from "./pages/Admin";
 import { CartProvider } from "./context/CartContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -25,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/success" element={<Success />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </CartProvider>
     </BrowserRouter>

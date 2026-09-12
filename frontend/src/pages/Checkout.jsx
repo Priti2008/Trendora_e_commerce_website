@@ -191,14 +191,9 @@ export default function Checkout() {
       setLoading(true);
       setError("");
 
-      /*
-        IMPORTANT:
-
-        If your backend has an order API,
-        connect it here.
-
-        Example:
-
+      const user = JSON.parse(localStorage.getItem("user"));
+      
+      try {
         await fetch("http://localhost:5000/api/orders", {
           method: "POST",
           headers: {
@@ -212,9 +207,12 @@ export default function Checkout() {
             delivery,
             discount,
             total,
+            customer: user ? { name: user.name, email: user.email } : { name: form.fullName, email: "guest@example.com" }
           }),
         });
-      */
+      } catch (err) {
+        console.error("Backend order sync failed:", err);
+      }
 
       const order = {
         id: "ORD-" + Date.now(),

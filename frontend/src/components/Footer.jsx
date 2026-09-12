@@ -1,4 +1,28 @@
+import { useState } from "react";
+
 export default function Footer() {
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!email.trim()) {
+      setError("Please enter your email.");
+      return;
+    }
+
+    if (!email.includes("@") || !email.includes(".")) {
+      setError("Please enter a valid email.");
+      return;
+    }
+
+    localStorage.setItem("newsletterEmail", email);
+    setSubscribed(true);
+    setEmail("");
+  };
   return (
     <footer
       style={{
@@ -186,10 +210,16 @@ export default function Footer() {
               to your inbox.
             </p>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <form onSubmit={handleSubscribe} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <input
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setSubscribed(false);
+                  setError("");
+                }}
                 style={{
                   padding: "14px 16px",
                   borderRadius: 14,
@@ -197,10 +227,12 @@ export default function Footer() {
                   outline: "none",
                   fontSize: "14px",
                   background: "white",
+                  color: "#111827",
                 }}
               />
 
               <button
+                type="submit"
                 style={{
                   background: "linear-gradient(135deg,#FB923C,#F97316)",
                   color: "white",
@@ -214,7 +246,19 @@ export default function Footer() {
               >
                 Subscribe
               </button>
-            </div>
+
+              {error && (
+                <p style={{ color: "#DC2626", fontSize: "12px", margin: "4px 0 0 0", fontWeight: "600" }}>
+                  ⚠️ {error}
+                </p>
+              )}
+
+              {subscribed && (
+                <p style={{ color: "#16A34A", fontSize: "13px", margin: "4px 0 0 0", fontWeight: "700" }}>
+                  ✓ Subscribed successfully!
+                </p>
+              )}
+            </form>
           </div>
         </div>
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5002/api/products";
+const API_URL = "http://localhost:5000/api/products";
 
 export const getProducts = async (search = "") => {
   const params = search.trim() ? { search: search.trim() } : {};

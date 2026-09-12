@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 function Home() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [subscribeError, setSubscribeError] = useState("");
 
   const card = {
     padding: "24px",
@@ -16,19 +17,19 @@ function Home() {
 
   const handleSubscribe = (e) => {
     e.preventDefault();
+    setSubscribeError("");
 
     if (!email.trim()) {
-      alert("Please enter your email address.");
+      setSubscribeError("Please enter your email address.");
       return;
     }
 
-    if (!email.includes("@")) {
-      alert("Please enter a valid email address.");
+    if (!email.includes("@") || !email.includes(".")) {
+      setSubscribeError("Please enter a valid email address.");
       return;
     }
 
     localStorage.setItem("newsletterEmail", email);
-
     setSubscribed(true);
     setEmail("");
   };
@@ -250,11 +251,12 @@ function Home() {
           >
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Enter your email address"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
                 setSubscribed(false);
+                setSubscribeError("");
               }}
               style={{
                 width: "100%",
@@ -291,14 +293,28 @@ function Home() {
             </button>
           </form>
 
+          {/* ERROR MESSAGE */}
+          {subscribeError && (
+            <p
+              style={{
+                marginTop: "16px",
+                color: "#DC2626",
+                fontWeight: "600",
+                fontSize: "14px",
+              }}
+            >
+              ⚠️ {subscribeError}
+            </p>
+          )}
+
           {/* SUCCESS MESSAGE */}
 
           {subscribed && (
             <p
               style={{
-                marginTop: "20px",
+                marginTop: "16px",
                 color: "#16A34A",
-                fontWeight: "600",
+                fontWeight: "700",
                 fontSize: "15px",
               }}
             >
